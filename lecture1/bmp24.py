@@ -63,23 +63,17 @@ class BMP24:
     def change_data(self):
         self.read_data()
         self.changed_bits = []
-        for row in self.bits:
+        for row in range(len(self.bits)):
             changed_row = []
-            for pixel in row:
-                if random.random() > 0.5:
+            for pixel in range(len(self.bits[row])):
+                if 390 <= row < 400 and 390 <= pixel < 400:
                     tmp_pixel = "\x00\x00\x00".encode()
                 else:
-                    tmp_pixel = pixel
+                    tmp_pixel = self.bits[row][pixel]
                 changed_row.append(tmp_pixel)
             self.changed_bits.append(changed_row)
         print('BMP data changed')
-    def sort_bit(self, bits):
-        sorted_bits = []
-        pass
 
-
-    def resort_bit(self, bits):
-        pass
     def add_frame(self, frame_width):
         self.read_data()
         self.change_header(self.width + frame_width, self.height + frame_width)
@@ -107,8 +101,35 @@ class BMP24:
         self.header = self.bfType + self.bfSize + self.bfReserved1 + self.bfReserved2 + self.bfOffBits + self.biSize + self.biWidth + self.biHeight + self.biPlanes + self.biBitCount + self.biCompression + self.biSizeImage + self.biXPelsPerMeter + self.biYPelsPerMeter + self.biClrUsed + self.biClrImportant
         print('BMP header changed')
 
+    def confirm_color(self):
+        self.read_data()
+        self.area = []
+        for r in range(len(self.bits)):
+            row_bits = []
+            for c in range(len(self.bits[r])):
+                if 390 <= r < 400 and 390 <= c < 400:
+                    row_bits.append(self.bits[r][c])
+            if row_bits:
+                self.area.append(row_bits)
+        # print(self.area)
+
+        all_colors = []
+        for row in self.area:
+            all_colors_row = []
+            for bit in row:
+                colors = (bit[2], bit[1], bit[0])
+                all_colors_row.append(colors)
+            all_colors.append(all_colors_row)
+        print(all_colors)
+
 
 
 if __name__ == '__main__':
     img1 = BMP24('./raw_image/img1_24.bmp')
+    # img1.change_data()
+    # img1.write_data(img1.changed_bits, './generated_image/img2_24.bmp')
+    # img1.read_data()
+    # print(img1.bits)
+    # img1.confirm_color()
     img1.add_frame(8)
+    img1.write_data(img1.changed_bits, './generated_image/img3_24.bmp')

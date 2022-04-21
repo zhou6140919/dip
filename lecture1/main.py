@@ -3,14 +3,14 @@ from bmp8 import BMP8
 import time
 
 # read 24bit bmp file
-print("reading 24bit bmp file")
+print("reading 24bit bmp file and confirm color of the right top corner")
 time.sleep(1)
 img1 = BMP24("./raw_image/img1_24.bmp")
-img1.read_data()
+img1.confirm_color()
 img1.write_data(img1.bits, "./generated_image/origin_img1_24.bmp")
 print("-" * 40)
-# randomly change pixels to black
-print("randomly change pixels to black")
+# change yellow pixels to black
+print("change yellow pixels to black")
 time.sleep(1)
 img1.change_data()
 img1.write_data(img1.changed_bits, "./generated_image/img2_24.bmp")

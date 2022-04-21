@@ -82,5 +82,5 @@ if __name__ == '__main__':
     img1.read_color_table()
     # change white background to black
     img1.change_color(255, ('\x00'.encode(), '\x00'.encode(), '\x00'.encode()))
-    img1.write_color_table("./tmp_8.bmp")
+    img1.write_color_table("./generated_image/img2_8.bmp")
 
